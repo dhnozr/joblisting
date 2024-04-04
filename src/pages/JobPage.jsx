@@ -1,16 +1,35 @@
-import { useParams, useLoaderData } from 'react-router-dom';
+import { useParams, useLoaderData, Link, useNavigate } from 'react-router-dom';
 import { Spinner } from '../components/Spinner';
+import { FaArrowLeft, FaMapMarker } from 'react-icons/fa';
 
 // burada useLoaderData hook cagiriyoruz ve yaptigimiz fetch isteginin sonucunu aliyoruz.
-export const JobPage = () => {
+export const JobPage = ({ deleteJob }) => {
   const job = useLoaderData();
+  const navigate = useNavigate();
+
+  const onDeleteJob = jobId => {
+    // kullaniciya soru sorucam
+    const confirm = window.confirm('Are you sure you want to delete this listing?');
+
+    // eger false ise function cikmak icin
+    if (!confirm) return;
+
+    // burada id geciriyoruz boylece id gecirilen job listeden kaldirilacak
+    // bunu direkt button uzerinden de verebilirdim ancak burada bu sekilde kullaninca kullaniciya silmek isteyip istemedigine dair soru sorabiliyorum
+    deleteJob(jobId);
+
+    // sildikten sonra kullaniciyi jobs sayfasina yonlendirmek icin
+    navigate('/jobs');
+  };
+
   return (
     <>
       <section>
         <div className='container px-6 py-6 m-auto'>
-          <a href='/jobs.html' className='flex items-center text-indigo-500 hover:text-indigo-600'>
-            <i className='mr-2 fas fa-arrow-left'></i> Back to Job Listings
-          </a>
+          <Link to='/jobs' className='flex items-center text-indigo-500 hover:text-indigo-600'>
+            {/* bu iconlara className ekleyerek style verebiliyoruz */}
+            <FaArrowLeft className='mr-2' /> Back to Job Listings
+          </Link>
         </div>
       </section>
 
@@ -19,26 +38,22 @@ export const JobPage = () => {
           <div className='grid w-full grid-cols-1 gap-6 md:grid-cols-70/30'>
             <main>
               <div className='p-6 text-center bg-white rounded-lg shadow-md md:text-left'>
-                <div className='mb-4 text-gray-500'>Full-Time</div>
-                <h1 className='mb-4 text-3xl font-bold'>Senior React Developer</h1>
+                <div className='mb-4 text-gray-500'>{job.type}</div>
+                <h1 className='mb-4 text-3xl font-bold'>{job.title}</h1>
                 <div className='flex justify-center mb-4 text-gray-500 align-middle md:justify-start'>
-                  <i className='mr-2 text-lg text-orange-700 fa-solid fa-location-dot'></i>
-                  <p className='text-orange-700'>Boston, MA</p>
+                  <FaMapMarker className='mr-1 text-orange-700' />
+                  <p className='text-orange-700'>{job.location}</p>
                 </div>
               </div>
 
               <div className='p-6 mt-6 bg-white rounded-lg shadow-md'>
                 <h3 className='mb-6 text-lg font-bold text-indigo-800'>Job Description</h3>
 
-                <p className='mb-4'>
-                  We are seeking a talented Front-End Developer to join our team in Boston, MA. The ideal candidate will
-                  have strong skills in HTML, CSS, and JavaScript, with experience working with modern JavaScript
-                  frameworks such as React or Angular.
-                </p>
+                <p className='mb-4'>{job.description}</p>
 
                 <h3 className='mb-2 text-lg font-bold text-indigo-800'>Salary</h3>
 
-                <p className='mb-4'>$70k - $80K / Year</p>
+                <p className='mb-4'>{job.salary}</p>
               </div>
             </main>
 
@@ -46,34 +61,34 @@ export const JobPage = () => {
               <div className='p-6 bg-white rounded-lg shadow-md'>
                 <h3 className='mb-6 text-xl font-bold'>Company Info</h3>
 
-                <h2 className='text-2xl'>NewTek Solutions</h2>
+                <h2 className='text-2xl'>{job.company.name}</h2>
 
-                <p className='my-2'>
-                  NewTek Solutions is a leading technology company specializing in web development and digital
-                  solutions. We pride ourselves on delivering high-quality products and services to our clients while
-                  fostering a collaborative and innovative work environment.
-                </p>
+                <p className='my-2'>{job.company.description}</p>
 
                 <hr className='my-4' />
 
                 <h3 className='text-xl'>Contact Email:</h3>
 
-                <p className='p-2 my-2 font-bold bg-indigo-100'>contact@newteksolutions.com</p>
+                <p className='p-2 my-2 font-bold bg-indigo-100'>{job.company.contactEmail}</p>
 
                 <h3 className='text-xl'>Contact Phone:</h3>
 
-                <p className='p-2 my-2 font-bold bg-indigo-100'>555-555-5555</p>
+                <p className='p-2 my-2 font-bold bg-indigo-100'>{job.company.contactPhone}</p>
               </div>
 
               <div className='p-6 mt-6 bg-white rounded-lg shadow-md'>
                 <h3 className='mb-6 text-xl font-bold'>Manage Job</h3>
-                <a
-                  href='/add-job.html'
+                <Link
+                  // edit sayfasina gitmek icin bu sekilde kullandim
+                  to={`jobs/edit/${job.id}`}
                   className='block w-full px-4 py-2 mt-4 font-bold text-center text-white bg-indigo-500 rounded-full hover:bg-indigo-600 focus:outline-none focus:shadow-outline'
                 >
                   Edit Job
-                </a>
-                <button className='block w-full px-4 py-2 mt-4 font-bold text-white bg-red-500 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline'>
+                </Link>
+                <button
+                  onClick={() => onDeleteJob(job.id)}
+                  className='block w-full px-4 py-2 mt-4 font-bold text-white bg-red-500 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline'
+                >
                   Delete Job
                 </button>
               </div>
