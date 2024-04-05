@@ -1,6 +1,7 @@
 import { useParams, useLoaderData, Link, useNavigate } from 'react-router-dom';
 import { Spinner } from '../components/Spinner';
 import { FaArrowLeft, FaMapMarker } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 // burada useLoaderData hook cagiriyoruz ve yaptigimiz fetch isteginin sonucunu aliyoruz.
 export const JobPage = ({ deleteJob }) => {
@@ -17,6 +18,8 @@ export const JobPage = ({ deleteJob }) => {
     // burada id geciriyoruz boylece id gecirilen job listeden kaldirilacak
     // bunu direkt button uzerinden de verebilirdim ancak burada bu sekilde kullaninca kullaniciya silmek isteyip istemedigine dair soru sorabiliyorum
     deleteJob(jobId);
+
+    toast.success('Job deleted successfully');
 
     // sildikten sonra kullaniciyi jobs sayfasina yonlendirmek icin
     navigate('/jobs');
@@ -80,7 +83,7 @@ export const JobPage = ({ deleteJob }) => {
                 <h3 className='mb-6 text-xl font-bold'>Manage Job</h3>
                 <Link
                   // edit sayfasina gitmek icin bu sekilde kullandim
-                  to={`jobs/edit/${job.id}`}
+                  to={`/edit-job/${job.id}`}
                   className='block w-full px-4 py-2 mt-4 font-bold text-center text-white bg-indigo-500 rounded-full hover:bg-indigo-600 focus:outline-none focus:shadow-outline'
                 >
                   Edit Job
@@ -103,6 +106,7 @@ export const JobPage = ({ deleteJob }) => {
 // React-Router data loader icin gerekli olan fetch yapisi bunu export ediyoruz ve route yazdigimiz yerde loader icinde kullaniyoruz boylece bizim icin sayfa yuklenmeden fetch yapiyor
 // basta biraz karisik gorunuyor burda fetch yapip route sayfasinda kullanmak ama mantik kolay
 // fetch yap route sayfasinda loader olarak kullan daha sonra gel yukarida hooku kullanarak fetchledigin dataya ulas
+// <Route></Route> bileseninde 'loader' propu kullanildiginda, params otomatik olarak saglanir. useParams hooku loader kullanirken gerekli degil
 export const jobLoader = async ({ params }) => {
   const res = await fetch(`http://localhost:8000/jobs/${params.id}`);
   const data = await res.json();
