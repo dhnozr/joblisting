@@ -2,7 +2,9 @@
 
 
 React Jobs is a simple yet functional CRUD application built with React. The purpose of this project is to provide hands-on experience and practice in creating CRUD (Create, Read, Update, Delete) operations within a React application. This project is suited for those looking to understand the fundamentals of React state management and client-server interaction with a mock backend.
+
 ![Ekran görüntüsü 2024-04-05 153324](https://github.com/dhnozr/joblisting/assets/115792609/e2a73b73-56e6-478e-b02d-675601f1539d)
+
 
 ## Built With
 
