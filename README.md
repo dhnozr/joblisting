@@ -55,16 +55,12 @@ Run the application in development mode
   npm run start
 ```
 
-## Kullanım/Örnekler
 
-```javascript
-import Component from 'benim-projem';
-
-function App() {
-  return <Component />;
-}
-```
 
 ## Ekran Görüntüleri
 
-![Uygulama Ekran Görüntüsü]()
+![Ekran görüntüsü 2024-04-05 152241](https://github.com/dhnozr/joblisting/assets/115792609/99ef7938-aa86-497d-aca2-fd2cf423c586)
+
+![Ekran görüntüsü 2024-04-05 152224](https://github.com/dhnozr/joblisting/assets/115792609/7d9a0e7c-18f7-4d6c-b3ab-22051c057801)
+
+![Ekran görüntüsü 2024-04-05 152202](https://github.com/dhnozr/joblisting/assets/115792609/13d502ed-6210-405e-a423-177a8c3e42f4)
