@@ -5,6 +5,7 @@ import { JobsPage } from './pages/JobsPage';
 import { NotFound } from './pages/NotFound';
 import { JobPage, jobLoader } from './pages/JobPage';
 import { AddJobPage } from './pages/AddJobPage';
+import { EditJobPage } from './pages/EditJobPage';
 
 function App() {
   // yeni job eklemek icin
@@ -33,6 +34,19 @@ function App() {
     return;
   };
 
+  // updateJob
+
+  const updateJob = async job => {
+    const res = await fetch(`http://localhost:8000/jobs/${job.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(job),
+    });
+    return;
+  };
+
   const router = createBrowserRouter(
     // mainlayout sayfayi dinamik olarak gostermek icin kullaniliyor navbari heryerde gostermek istiyorum ancak geri kalani outlet esletikce gosterecegim
     // outlet hatirlatma: outlet alt route esletikce gostermeye yariyor
@@ -45,6 +59,9 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path='/jobs' element={<JobsPage />} />
         <Route path='/add-job' element={<AddJobPage addJobSubmit={addJob} />} />
+        {/* :id yazimi buranin dinamik oldugunu belirtiyor. */}
+        <Route path='/edit-job/:id' element={<EditJobPage updateJubSubmit={updateJob} />} loader={jobLoader} />
+        {/* burada iki yerde loader kullanma sebebim ikisinde de ayni job fetch islemini yapiyoruz. jobLoader bizim icin job fetchledegi icin alttaki ve ustteki ayni gorevi goruyor alttaki tikladigim id'deki job detail gidiyor yukarida ki ise edite tikladigimda o id'deki job fetcheleyip edit sayfasina getiriyor o yuzden ikisinde de ayni loaderi kullaniyorum */}
         <Route path='/jobs/:id' element={<JobPage deleteJob={deleteJob} />} loader={jobLoader} />
         <Route path='*' element={<NotFound />} />
       </Route>
