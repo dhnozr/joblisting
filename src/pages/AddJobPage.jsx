@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { toast } from 'react-toastify';
+
 // prop olarak submit function geliyor
 export const AddJobPage = ({ addJobSubmit }) => {
   const [title, setTitle] = useState('');
@@ -29,11 +31,14 @@ export const AddJobPage = ({ addJobSubmit }) => {
         name: companyName,
         contactEmail,
         contactPhone,
+        description: companyDescription,
       },
     };
 
     // burada prop olarak gelen functionu kullaniyorum ve newJobu servere gonderiyorum
     addJobSubmit(newJob);
+
+    toast.success('Job added successfully');
     // kullanici job submit ettikten sonra onu jobs sayfasina yonlendiriyorum
     return navigate('/jobs');
   };
